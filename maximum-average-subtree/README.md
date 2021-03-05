@@ -1,3 +1,4 @@
+[Discussion Post (created on 5/2/2021 at 12:39)](https://leetcode.com/problems/maximum-average-subtree/discuss/1095174/Java-100-faster)  
 <h2>1120. Maximum Average Subtree</h2><h3>Medium</h3><hr><div><p>Given the <code>root</code> of a binary tree, find the maximum average value of any subtree of that tree.</p>
 
 <p>(A subtree of a tree is any node of that tree plus all its descendants. The average value of a tree is the sum of its values, divided by the number of nodes.)</p>
