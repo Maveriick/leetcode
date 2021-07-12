@@ -1,25 +1,25 @@
 class Solution {
     public int maxProfit(int[] prices) {
-        int[] diffArray = new int[prices.length ];
-        for(int i = 0; i < prices.length - 1; i++) {
-            diffArray[i] = prices[i+1] - prices[i];
+        int[] diffArray = new int[prices.length -1];
+        int diffArrayStart = 0;
+        for(int i = 1; i < prices.length; i++) {
+            diffArray[diffArrayStart] = prices[i] - prices[i - 1];
+            diffArrayStart++;
         }
+        
         System.out.println(Arrays.toString(diffArray));
-        int maxTillIndex = 0;
-        int maxProfit = Integer.MIN_VALUE;
+        int maxSum = 0;
+        int currentSum = 0;
         for(int i = 0; i < diffArray.length; i++) {
-            maxTillIndex += diffArray[i];
-            if(maxTillIndex > maxProfit) {
-                maxProfit = maxTillIndex;
+            currentSum += diffArray[i];
+            if(currentSum > maxSum) {
+                maxSum = currentSum;
             }
             
-            if(maxTillIndex < 0){
-                maxTillIndex = 0;
+            if(currentSum < 0) {
+                currentSum = 0;
             }
         }
-        return maxProfit;
+        return maxSum;
     }
 }
-
-
-        
