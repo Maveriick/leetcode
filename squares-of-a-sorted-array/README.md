@@ -1,3 +1,4 @@
+[Discussion Post (created on 14/6/2021 at 16:27)](https://leetcode.com/problems/squares-of-a-sorted-array/discuss/1338364/Java-100-faster)  
 <h2>977. Squares of a Sorted Array</h2><h3>Easy</h3><hr><div><p>Given an integer array <code>nums</code> sorted in <strong>non-decreasing</strong> order, return <em>an array of <strong>the squares of each number</strong> sorted in non-decreasing order</em>.</p>
 
 <p>&nbsp;</p>
