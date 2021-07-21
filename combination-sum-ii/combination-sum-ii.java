@@ -1,34 +1,26 @@
 class Solution {
-    List<List<Integer>> solution = new ArrayList<>();
+    List<List<Integer>> sol = new ArrayList<>();
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
-        List<Integer> candidatesList = Arrays.stream(candidates)        // IntStream
-                                    .boxed()          // Stream<Integer>
-                                    .collect(Collectors.toList());
-        List<Integer> current = new ArrayList<>();
-        backtrack(current, candidatesList, target, 0);
-        return solution;
+        backTrack(candidates, target, new ArrayList<>(), 0, 0);
+        
+        return sol;
     }
     
-    private void backtrack(List<Integer> current, List<Integer> candidates, int target, int currentSum) {
-        //System.out.println(current.toString());
-        if(currentSum == target && !solution.contains(current)) {
-            solution.add(new ArrayList<Integer>(current));
-            return;
+    private void backTrack(int[] candidates, int target, List<Integer> currentList, int currentSum, int start) {
+        if(currentSum == target) {
+            sol.add(new ArrayList<>(currentList));
         }
         
-        if(currentSum > target){
-            return;
+        for(int i = start; i < candidates.length; i++) {
+            if(i > start && candidates[i-1] == candidates[i]) {
+                continue;
+            }
+            if(candidates[i] + currentSum <= target){
+                currentList.add(candidates[i]);
+                backTrack(candidates, target, currentList, currentSum + candidates[i], i + 1);
+                currentList.remove(currentList.size() - 1);
+            }
         }
-        
-        for(int i = 0; i < candidates.size(); i++) {
-            current.add(candidates.get(i));
-            List<Integer> remaining = new ArrayList<>();
-            remaining.addAll(candidates.subList(i + 1, candidates.size()));
-            
-            backtrack(current, remaining, target, currentSum + candidates.get(i));
-            current.remove(current.size() - 1);
-        }
-        
     }
 }
