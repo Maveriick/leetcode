@@ -1,88 +1,61 @@
-class TrieNode{
-    public Map<Character, TrieNode> children;
+class TrieNode {
     boolean isEndOfWord;
+    Map<Character, TrieNode> children;
+    
     public TrieNode() {
-        children = new HashMap<>();
-        isEndOfWord = false;
-    }
+        this.isEndOfWord = false;
+        this.children = new HashMap<>();
+    }    
 }
 
-class Trie{
-    TrieNode root;
-    public Trie() {
+
+
+class WordDictionary {
+
+     TrieNode root;
+    /** Initialize your data structure here. */
+    public WordDictionary() {
         root = new TrieNode();
     }
     
-    public void addWord(String word){
-        TrieNode current = root;
-        for(int i = 0; i < word.length(); i++){
-            Character currentChar = word.charAt(i);
-            if(current.children.containsKey(currentChar)){
-                current = current.children.get(currentChar);
+    public void addWord(String word) {
+        TrieNode runner = root;
+        for(int i = 0; i < word.length(); i++) {
+            Character current = word.charAt(i);
+            if(runner.children.containsKey(current)){
+                runner = runner.children.get(current);
             } else {
                 TrieNode node = new TrieNode();
-                current.children.put(currentChar, node);
-                current = current.children.get(currentChar);
+                runner.children.put(current, node);
+                runner = runner.children.get(current);
             }
         }
-        current.isEndOfWord = true;
+        runner.isEndOfWord = true;
     }
     
+    public boolean search(String word) {
+        return searchRecursive(root, word, 0);
+    }
     
-    
-    public boolean recursiveSearch(TrieNode current, String word, int currentIndex) {
-    
-        if(currentIndex  == word.length() ){
-            return current.isEndOfWord;
+    private boolean searchRecursive(TrieNode root, String word, int index) {
+        if(index >= word.length()){
+            return root.isEndOfWord == true;
         }
         
-        if(word.charAt(currentIndex) == '.') {
-            boolean wordExists = false;
-            for(Map.Entry<Character, TrieNode> entry: current.children.entrySet()){
-                wordExists = wordExists || recursiveSearch(current.children.get(entry.getKey()), word, currentIndex + 1);
+        Character current = word.charAt(index);
+        if(root.children.containsKey(current)) {
+            return searchRecursive(root.children.get(current), word, index + 1);
+        } else if(current == '.') {
+            boolean isPresent = false;
+            for(char i = 'a' ; i <= 'z'; i++) {
+                if(root.children.containsKey(i)){
+                    isPresent = isPresent || searchRecursive(root.children.get(i), word, index + 1);
+                }
             }
-            return wordExists;
+            return isPresent;
         } else {
-            if(!current.children.containsKey(word.charAt(currentIndex))) {
-                return false;
-            } else {
-                return recursiveSearch(current.children.get(word.charAt(currentIndex)), word, currentIndex + 1);
-            }
+            return false;
         }
-    }
-    
-    public boolean search(String word) {
-        TrieNode c = root;
-        for(int i = 0; i < word.length(); i++){
-            Character current = word.charAt(i);
-            if(current == '.'){
-                return recursiveSearch(c, word, i);
-            } else if(c.children.containsKey(current)){
-                c = c.children.get(current);
-            } else {
-                return false;
-            }
-        }
-        return c.isEndOfWord;
-    }
-    
-    
-}
-
-class WordDictionary {
-    Trie t;
-
-    /** Initialize your data structure here. */
-    public WordDictionary() {
-        t = new Trie();
-    }
-    
-    public void addWord(String word) {
-        t.addWord(word);
-    }
-    
-    public boolean search(String word) {
-        return t.search(word);
     }
 }
 
