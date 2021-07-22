@@ -1,64 +1,68 @@
 class Solution {
     public List<Integer> spiralOrder(int[][] matrix) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
-        
-        int totalElements = rows * cols;
-        int doneElements = 0;
-        
-        int currentRow = 0;
-        int currentCol = 0;
-        
         int rowStart = 0;
+        int rowEnd = matrix.length - 1;
         int colStart = 0;
-        
-        int rowEnd = rows - 1;
-        int colEnd = cols - 1;
-        
-        
-        List<Integer> solution = new ArrayList<Integer>();
-        while(doneElements < totalElements) {
-            
-           // right
-           for(int i = colStart ; i <= colEnd; i++) {
-               solution.add(matrix[rowStart][i]);
-               doneElements++;
-           }
-           rowStart++;
-            if(doneElements >= totalElements){
+        int colEnd = matrix[0].length - 1;
+        int numElements = matrix.length * matrix[0].length;
+        int elements = 0;
+        List<Integer> sol = new ArrayList<>();
+        while(elements < numElements) {
+          
+            for(int i = colStart; i <= colEnd; i++) {
+                sol.add(matrix[rowStart][i]);
+                elements++;
+            }
+            rowStart ++;
+            System.out.println(elements);
+            System.out.println("Num" + elements);
+            if(elements == numElements) {
                 break;
             }
             
-           // down
-           for(int i = rowStart ; i <= rowEnd; i++) {
-               solution.add(matrix[i][colEnd]);
-               doneElements++;
-           }
+           
+            
+            for(int i = rowStart; i <= rowEnd; i++){
+                sol.add(matrix[i][colEnd]);
+                elements++;
+            }
             colEnd --;
-            if(doneElements >= totalElements){
+            System.out.println(elements);
+             if(elements == numElements) {
+                break;
+            }
+           
+            
+            for(int i = colEnd; i >= colStart; i--) {
+                sol.add(matrix[rowEnd][i]);
+                elements++;
+            }
+            rowEnd --;
+            System.out.println(elements);
+             if(elements == numElements) {
                 break;
             }
             
-            // left
-           for(int i = colEnd ; i >= colStart; i--) {
-               solution.add(matrix[rowEnd][i]);
-               doneElements++;
-           }
-            rowEnd--;
-            if(doneElements >= totalElements){
-                break;
-            }
             
-            // down
-           for(int i = rowEnd ; i >= rowStart; i--) {
-               solution.add(matrix[i][colStart]);
-               doneElements++;
-           }
+            for(int i = rowEnd; i >= rowStart; i--){
+                sol.add(matrix[i][colStart]);
+                elements++;
+            }
             colStart++;
-            if(doneElements >= totalElements){
+            System.out.println(elements);
+             if(elements == numElements) {
                 break;
             }
+            
         }
-        return solution;
+        
+        return sol;
     }
 }
+
+
+/*
+1 2 3 4 0
+5 6 7 8
+9 9 9 9 2
+*/
