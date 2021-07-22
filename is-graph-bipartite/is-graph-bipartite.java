@@ -1,57 +1,67 @@
 class Solution {
-    Map<Integer, Boolean> state = new HashMap<>();
+    boolean canComplete = true;
     Set<Integer> visited = new HashSet<>();
+    Map<Integer, Integer> color = new HashMap<>();
+    
     public boolean isBipartite(int[][] graph) {
-        Map<Integer, List<Integer>> g = buildGraph(graph);
-        
-        Queue<Integer> bfsQ = new LinkedList<>();
-        
-        
-        for(int i = 0; i < graph.length; i++){
-            
-            if(!visited.contains(i)) {
-                bfsQ.add(i);
-                visited.add(0);
-                state.put(i, true);
-                while(!bfsQ.isEmpty()) {
-                    int current = bfsQ.remove();
-                    List<Integer> connections = g.getOrDefault(current, new ArrayList<Integer>());
-                    for(int j = 0; j < connections.size(); j++) {
-                        int toAdd = connections.get(j);
-                        if(state.containsKey(toAdd) && state.get(toAdd) == state.get(current)) {
-                            return false;
-                        }
-                        if(!visited.contains(toAdd)){
-                            visited.add(toAdd);
-                            state.put(toAdd, getCompliment(state.get(current)));
-                            bfsQ.add(toAdd);
-                        }
-                        
-                    }
-                }
-            }
-        }
-        
-        return true;
-        
-    }
-    
-    
-    
-    private Map<Integer, List<Integer>> buildGraph(int[][] graph) {
-         Map<Integer, List<Integer>> aList = new HashMap<Integer, List<Integer>>();
+        Map<Integer, List<Integer>> g = buildG(graph);
+        System.out.println(g.toString());
         for(int i = 0; i < graph.length; i++) {
-            int src = i;
-            List<Integer> children = IntStream.of(graph[i]).boxed().collect(Collectors.toList());
-            List<Integer> srcList = aList.getOrDefault(src, new LinkedList<Integer>());
-            srcList.addAll(children);
-            aList.put(src, srcList);
+            if(!canComplete == false && !visited.contains(i)){
+                color.put(i, 0);
+                dfs(i, g);
+            }     
         }
-        return aList;
+        return canComplete;
     }
     
     
-    private boolean getCompliment(boolean a) {
-        return !a;
+    private void dfs(int currentCourse, Map<Integer, List<Integer>> g) {
+        //System.out.println(color.toString());
+        if(canComplete == false){
+            return;
+        }
+        visited.add(currentCourse);
+        List<Integer> courses = g.getOrDefault(currentCourse, new ArrayList<>());
+        for(int i = 0; i < courses.size(); i++) {
+           
+                if(color.containsKey(courses.get(i))){
+                    if(color.get(courses.get(i)) == color.get(currentCourse)){
+                        canComplete = false;
+                        return;
+                    }
+                } else {
+                    color.put(courses.get(i), complementColor(color.get(currentCourse)));
+                    dfs(courses.get(i), g);
+                }
+        
+        }
     }
+    
+    
+    private Map<Integer, List<Integer>> buildG(int[][] p) {
+        Map<Integer, List<Integer>> g = new HashMap<>();
+        for(int i = 0; i < p.length; i++) {
+            int from = i;
+            int[] to = p[i];
+            List<Integer> cList = g.getOrDefault(from, new ArrayList<>());
+            for(int j = 0; j < to.length; j++) {
+                cList.add(to[j]);
+            }
+            g.put(from, cList);
+        }
+        return g;
+    }
+    
+    private int complementColor(int color) {
+        if(color == 1){
+            return 0;
+        } else {
+            return 1;
+        }
+        
+        
+    }
+    
+    
 }
