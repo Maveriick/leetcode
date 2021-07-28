@@ -1,72 +1,58 @@
-class FileNode{
-    public int value;
-    public Map<String, FileNode> children;
-    public FileNode() {
-        children = new HashMap<>();
-    }
-}
-
-class FileManager{
-    public FileNode root;
+class TrieNode {
+    Integer value;
+    Map<String, TrieNode> children;
     
-    public FileManager() {
-        this.root = new FileNode();
+    public TrieNode() {
+        this.children = new HashMap<>();
+        this.value = null;
     }
-    
 }
 
 class FileSystem {
 
-    FileNode root;
+    TrieNode root;
     public FileSystem() {
-        root = new FileNode();
+        root = new TrieNode();
     }
     
     public boolean createPath(String path, int value) {
-        if(path.length() <= 0) {
-            return false;
-        }
-        FileNode runner = root;
-        path = path.substring(1);
-        //System.out.println(path);
-        String[] parts = path.split("/");
-        //System.out.println(Arrays.toString(parts));
-        for(int i = 0; i < parts.length - 1; i++) {
-            if(runner.children.containsKey(parts[i])){
-                runner = runner.children.get(parts[i]);
+        String[] split = path.substring(1, path.length()).split("/");
+       
+        TrieNode runner = root;
+        for(int i = 0; i < split.length; i++) {
+            if(runner.children.containsKey(split[i])){
+                runner = runner.children.get(split[i]);
             } else {
-                return false;
+                if(i != split.length - 1){
+                    return false;
+                } else {
+                    TrieNode n = new TrieNode();
+                    runner.children.put(split[i], n);
+                    runner = runner.children.get(split[i]);
+                }
             }
         }
         
-        String toAdd = parts[parts.length - 1];
-        if(runner.children.containsKey(toAdd)){
-          return false;
-        } else {
-            FileNode toAddNode = new FileNode();
-            toAddNode.value = value;
-            runner.children.put(parts[parts.length - 1], toAddNode);
+        if(runner.value != null) {
+            return false;
         }
-       
+        runner.value = value;
         return true;
-        
     }
     
     public int get(String path) {
-        FileNode runner = root;
-        path = path.substring(1);
-        String[] parts = path.split("/");
-       // System.out.println(Arrays.toString(parts));
-        for(int i = 0; i < parts.length; i++) {
-            if(runner.children.containsKey(parts[i])){
-                runner = runner.children.get(parts[i]);
+        String[] split = path.substring(1, path.length()).split("/");
+         //System.out.println(Arrays.toString(split));
+        TrieNode runner = root;
+        for(int i = 0; i < split.length; i++) {
+            if(runner.children.containsKey(split[i])){
+                runner = runner.children.get(split[i]);
             } else {
                 return -1;
             }
         }
         return runner.value;
     }
-    
 }
 
 /**
