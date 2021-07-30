@@ -14,33 +14,41 @@
  * }
  */
 class Solution {
+    Map<Integer, List<TreeNode>> levelMap = new HashMap<>();
     public TreeNode addOneRow(TreeNode root, int val, int depth) {
+        traverse(root, 1);
+        List<TreeNode> c = levelMap.get(depth - 1);
         if(depth == 1){
-            TreeNode newRoot = new TreeNode(val);
-            newRoot.left = root;
-            return newRoot;
+            TreeNode n = new TreeNode(val);
+            n.left = root;
+            return n;
         }
-        traverse(root, val, depth, 1);
+        for(int i = 0; i < c.size(); i++) {
+            TreeNode current = c.get(i);
+           
+                TreeNode n = new TreeNode(val);
+                n.left = current.left;
+                current.left = n;
+            
+            
+        
+                TreeNode n2 = new TreeNode(val);
+                n2.right = current.right;
+                current.right = n2;
+            
+        }
         return root;
+        
     }
     
-    
-    private void traverse(TreeNode root, int val, int depth, int currentDepth) {
+    private void traverse(TreeNode root, int depth) {
         if(root == null) {
             return;
         }
-        
-        traverse(root.left, val, depth, currentDepth + 1);
-        
-        if(currentDepth == depth - 1){
-            TreeNode leftNode = new TreeNode(val);
-            TreeNode rightNode = new TreeNode(val);
-            leftNode.left = root.left;
-            rightNode.right = root.right;
-            root.left = leftNode;
-            root.right = rightNode;
-        }
-        
-        traverse(root.right, val, depth, currentDepth + 1);
+        traverse(root.left, depth + 1);
+        List<TreeNode> current = levelMap.getOrDefault(depth, new ArrayList<>());
+        current.add(root);
+        levelMap.put(depth, current);
+        traverse(root.right, depth + 1);
     }
 }
