@@ -1,38 +1,51 @@
 class Solution {
+    List<List<Integer>> solution = new ArrayList<>();
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (nums == null || nums.length < 3)
-            return result;
-        
-        Arrays.sort(nums);
-        
-        for (int i=0;i<nums.length;i++){
-            if(i-1 >= 0 && nums[i] == nums[i-1])
-                continue;
+       Arrays.sort(nums);
+        System.out.println(Arrays.toString(nums));
+        for(int i = 0; i < nums.length; i++) {
+            if(i == 0 || nums[i-1] != nums[i]){
+                findSum(nums, 0 - nums[i], i);
+            }
             
-            int left = i+1;
-            int right = nums.length - 1;
-            
-            while (left < right){
-                int sum = nums[i] + nums[left] + nums[right];
-                
-                if (sum == 0){
-                    result.add(Arrays.asList(nums[i] , nums[left] , nums[right]));
-                    while (left + 1 < right && nums[left] == nums[left+1])
-                        left++;
-                    while (right-1 > left && nums[right] == nums[right-1])
-                        right--;
-                    left++;
-                    right--;    
-                }
-                else if (sum < 0){
-                    left++;
-                }
-                else{
-                    right--;
+        }
+        return solution;
+    }
+    
+    
+    
+    private void findSum(int[] nums, int target, int currentIndex) {
+        int start = currentIndex + 1;
+        int end = nums.length - 1;
+       
+        
+        while(start < end) {
+            int sum = nums[start] + nums[end];
+            if(sum < target) {
+                start ++;
+            } else if(sum > target){
+                end --;
+            } else {
+                List<Integer> currentSolution = new ArrayList<>();
+                currentSolution.add(nums[currentIndex]);
+                if(sum == target){
+                    currentSolution.add(nums[start]);
+                    currentSolution.add(nums[end]);
+                    solution.add(currentSolution);
+                    
+                    int leftStart = start + 1;
+                    while(leftStart < end && nums[leftStart] == nums[start]){
+                        leftStart++;
+                    }
+                    start = leftStart;
+                    
+                    int rightStart = end - 1;
+                    while(rightStart > start && nums[rightStart] == nums[end]) {
+                        rightStart --;
+                    }
+                    end = rightStart;
                 }
             }
         }
-        return result;
-    }
+    } 
 }
