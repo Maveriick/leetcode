@@ -7,31 +7,33 @@ class Solution {
         //System.out.println(indexMap.toString());
         
         
-        // Compare adjacent words
         for(int i = 0; i < words.length - 1; i++) {
             String currentWord = words[i];
-            String nextWord = words[i + 1];
-            
+            String nextWord = words[i+1];
             
             for(int j = 0; j < currentWord.length(); j++) {
-                if (j >= words[i + 1].length()) return false;
-                int currentWordIndex = indexMap.get(currentWord.charAt(j));
-                int nextWordIndex = indexMap.get(nextWord.charAt(j));
-               
+                if(j > nextWord.length() - 1){
+                    return false;
+                }
                 
-                if(currentWordIndex != nextWordIndex){
-                    if(currentWordIndex > nextWordIndex) {
+                int currentCharIndex = indexMap.get(currentWord.charAt(j));
+                int nextCharIndex = indexMap.get(nextWord.charAt(j));
+                
+                if(currentCharIndex != nextCharIndex) {
+                    if(currentCharIndex > nextCharIndex){
                         return false;
                     } else {
                         break;
                     }
-                } 
+                }
             }
         }
-            
         return true;
         
         
         
     }
 }
+
+
+
