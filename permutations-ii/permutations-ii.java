@@ -1,28 +1,28 @@
 class Solution {
-     List<List<Integer>> sol = new ArrayList<>();
+    List<List<Integer>> solution = new ArrayList<>();
     public List<List<Integer>> permuteUnique(int[] nums) {
         Arrays.sort(nums);
-        permute(nums, new ArrayList<>(), new HashSet<>());
-        return sol;
+        backTrack(nums, new ArrayList<>(), new boolean[nums.length]);
+        return solution;
     }
     
-    private void permute(int[] nums, List<Integer> currentList, Set<Integer> seenIndex) {
-        
+    
+    private void backTrack(int[] nums, List<Integer> currentList, boolean[] visited) {
         if(currentList.size() == nums.length) {
-            sol.add(new ArrayList<>(currentList));
+            solution.add(new ArrayList<>(currentList));
             return;
         }
         
         for(int i = 0; i < nums.length; i++) {
-            if(seenIndex.contains(i) || i > 0 && nums[i] == nums[i-1] && seenIndex.contains(i-1) ) continue;
-
-                currentList.add(nums[i]);
-                seenIndex.add(i);
-                permute(nums, currentList, seenIndex);
-                seenIndex.remove(i);
-                currentList.remove(currentList.size() - 1); 
-            
-                         
+            if(visited[i] == true || i > 0 && nums[i-1] == nums[i] && visited[i-1] == true){
+                continue;
+            }
+        
+            currentList.add(nums[i]);
+            visited[i] = true;
+            backTrack(nums, currentList, visited);
+            currentList.remove(currentList.size() - 1);
+            visited[i] = false;
         }
     }
 }
