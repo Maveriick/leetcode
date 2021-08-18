@@ -23,17 +23,20 @@ class Solution {
         
         while(current != null && current.next != null) {
             next = current.next;
-            
             prev.next = next;
             current.next = next.next;
             next.next = current;
             
-            
             prev = current;
             current = current.next;
             
-    
         }
+        
         return dummy.next;
     }
 }
+
+
+/*
+1 -> 2 -> 3 -> 4
+*/
