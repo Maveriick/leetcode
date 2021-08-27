@@ -1,41 +1,34 @@
-class Interval {
-    int s;
-    int e;
-    public Interval(int s, int e) {
-        this.s = s;
-        this.e = e;
-    }
-}
-
-
 class Solution {
     public int[][] intervalIntersection(int[][] firstList, int[][] secondList) {
-        int firstIndex = 0;
-        int secondIndex = 0;
+        List<int[]> intersection = new ArrayList<>();
         
-        List<Interval> solution = new ArrayList<>();
-        while(firstIndex < firstList.length && secondIndex < secondList.length) {
-            if((firstList[firstIndex][1] >= secondList[secondIndex][0]) || secondList[secondIndex][1] >= firstList[firstIndex][0]){
-                int start = Math.max(firstList[firstIndex][0], secondList[secondIndex][0]);
-                int end = Math.min(firstList[firstIndex][1], secondList[secondIndex][1]);
+        int firstStart = 0;
+        int secondStart = 0;
+        while(firstStart < firstList.length && secondStart < secondList.length) {
+            if(firstList[firstStart][1] >= secondList[secondStart][0] || secondList[secondStart][1] >= firstList[firstStart][0]) {
+                int start = Math.max(firstList[firstStart][0], secondList[secondStart][0]);
+                int end = Math.min(firstList[firstStart][1], secondList[secondStart][1]);
                 if(start <= end) {
-                    Interval intersection = new Interval(start, end);
-                    solution.add(intersection);
+                     intersection.add(new int[]{start, end});
                 }
-            }
+               
+            } 
             
-            if(firstList[firstIndex][1] < secondList[secondIndex][1]) {
-                firstIndex++;
+            if(firstList[firstStart][1] < secondList[secondStart][1]){
+                firstStart++;
             } else {
-                secondIndex++;
+                secondStart++;
             }
         }
         
-        int[][] solutionArray = new int[solution.size()][2];
-        for(int i = 0; i < solution.size(); i++) {
-            solutionArray[i][0] = solution.get(i).s;
-            solutionArray[i][1] = solution.get(i).e;
+        
+        int[][] solution = new int[intersection.size()][2];
+        for(int i = 0; i < intersection.size(); i++) {
+            int[] current = intersection.get(i);
+            solution[i][0] = current[0];
+            solution[i][1] = current[1];
+            
         }
-        return solutionArray;
+        return solution;
     }
 }
