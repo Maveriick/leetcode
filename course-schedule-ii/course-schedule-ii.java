@@ -1,68 +1,64 @@
 class Solution {
-    Set<Integer> incoming = new HashSet<>();
-     Stack<Integer> solution = new Stack<>();
-     Set<Integer> visited = new HashSet<>();
-    boolean canFinish = true;
+    Set<Integer> hasIncoming = new HashSet<>();
+    boolean possible = true;
+    Set<Integer> discovered = new HashSet<>();
+    Set<Integer> processed = new HashSet<>();
+    Stack<Integer> order = new Stack<>();
+    
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-       
-        Map<Integer, List<Integer>> g = buildMap(prerequisites);
-        System.out.println(g.toString());
-       
-        for(int i = 0; i < numCourses; i++) {
-            if(!incoming.contains(i) && !visited.contains(i)){
-                dfs(i, g, new HashSet<>());
+        Map<Integer, List<Integer>> graph = buildGraph(prerequisites);
+        for(int i = 0; i < numCourses; i++){
+            if(!hasIncoming.contains(i)) {
+                dfs(i, graph);
             }
         }
         
-         if(canFinish == false || visited.size() != numCourses){
+        
+        
+        if(hasIncoming.size() == numCourses || possible == false || processed.size() != numCourses) {
             return new int[]{};
         }
         
-        int[] order = new int[numCourses];
-        int counter = 0;
-        while(!solution.isEmpty()){
-            order[counter] = solution.pop();
-            counter++;
-        }
-    
-        return order;
-    }
-    
-    private void dfs(int currentCourse, Map<Integer, List<Integer>> g, Set<Integer> currentStack) {
-        System.out.println(currentCourse);
-        if(canFinish == false){
-            return;
-        }
-        visited.add(currentCourse);
-        List<Integer> dependents = g.getOrDefault(currentCourse, new ArrayList<Integer>());
-        for(int i = 0; i < dependents.size(); i++){
-            if(!currentStack.contains(dependents.get(i))){
-                if(!visited.contains(dependents.get(i))) {
-                    currentStack.add(currentCourse);
-                    dfs(dependents.get(i), g, currentStack);
-                    currentStack.remove(currentCourse);
-                }
-            } else {
-                canFinish = false;
-            }
+        System.out.println(order.toString());
+        int[] solution = new int[numCourses];
+        int index = 0;
+        while(!order.isEmpty()){
+            solution[index] = order.pop();
+            index++;
         }
         
-        solution.add(currentCourse);
-        System.out.println(solution.toString());
-        System.out.println();
+        return solution;
     }
     
-    
-    private Map<Integer, List<Integer>> buildMap(int[][] pre) {
-        Map<Integer, List<Integer>> g = new HashMap<>();
-        for(int i = 0; i < pre.length; i++) {
-            int from = pre[i][1];
-            int to = pre[i][0];
-            List<Integer> current = g.getOrDefault(from, new ArrayList<>());
-            current.add(to);
-            g.put(from, current);
-            incoming.add(to);
+    private void dfs(int currentCourse, Map<Integer, List<Integer>> graph) {
+        
+        discovered.add(currentCourse);
+        List<Integer> neighbours = graph.getOrDefault(currentCourse, new ArrayList<>());
+        for(int i  = 0; i < neighbours.size(); i++) {
+            if(discovered.contains(neighbours.get(i)) && !processed.contains(neighbours.get(i))){
+                possible = false;
+            }
+            if(!discovered.contains(neighbours.get(i))) {
+                dfs(neighbours.get(i), graph);
+                
+            }
         }
-        return g;
+        order.push(currentCourse);
+        processed.add(currentCourse);
     }
+    
+    
+    private Map<Integer, List<Integer>> buildGraph(int[][] prereqs) {
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for(int i = 0; i < prereqs.length; i++) {
+            int from = prereqs[i][1];
+            int to = prereqs[i][0];
+            hasIncoming.add(to);
+            List<Integer> fromList = graph.getOrDefault(from, new ArrayList<>());
+            fromList.add(to);
+            graph.put(from, fromList);
+        }
+        return graph;
+    }
+
 }
