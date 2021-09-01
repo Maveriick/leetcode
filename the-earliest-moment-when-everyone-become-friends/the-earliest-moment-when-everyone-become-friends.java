@@ -1,96 +1,96 @@
-class Link{
-    public int timeStamp;
-    public int from;
-    public int to;
-    public Link(int timeStamp, int from, int to) {
+class UnionFind {
+    int totalSize;
+    int[] parents;
+    int[] size;
+    int numComponents;
+    
+    public UnionFind(int size) {
+        this.totalSize = size;
+        this.parents = new int[size];
+        this.size = new int[size];
+        for(int i = 0; i < this.size.length; i++) {
+            parents[i] = i;
+            this.size[i] = 1;
+        }
+        this.numComponents = size;
+    }
+    
+    public int findParent(int p) {
+        int root = p;
+        while(parents[root] != root) {
+            root = parents[root];
+        }
+        
+        while(p != root) {
+            int next = parents[p];
+            parents[p] = root;
+            p = next;
+        }
+        
+        return root;
+    }
+    
+    public boolean isConnected(int person1, int person2) {
+        return findParent(person1) == findParent(person2);
+    }
+    
+    public void union(int p , int q){
+        int parentP = findParent(p);
+        int parentQ = findParent(q);
+        if(parentP == parentQ) {
+            return;
+        }
+        
+        if(size[parentP] < size[parentQ]){
+            size[parentQ] += size[parentP];
+            parents[parentP] = parents[parentQ];
+        } else {
+            size[parentP] += size[parentQ];
+            parents[parentQ] = parents[parentP];
+        }
+        numComponents--;
+    }
+    
+    public boolean isSingleComponent() {
+        return numComponents == 1;
+    }
+    
+}
+
+class TimeStamp {
+    int timeStamp;
+    int p;
+    int q;
+    
+    public TimeStamp(int timeStamp, int p, int q) {
         this.timeStamp = timeStamp;
-        this.from = from;
-        this.to = to;
+        this.p = p;
+        this.q = q;
     }
 }
 
 class Solution {
-    PriorityQueue<Link> pq = new PriorityQueue<>((a,b) -> a.timeStamp - b.timeStamp);
-    int[] parents;
-    int[] size;
-    
-    public int earliestAcq(int[][] logs, int N) {
+    public int earliestAcq(int[][] logs, int n) {
+        UnionFind unionFind = new UnionFind(n);
+        
+        PriorityQueue<TimeStamp> pq = new PriorityQueue<>((a,b) -> a.timeStamp - b.timeStamp);
+        
         for(int i = 0; i < logs.length; i++){
-            Link l = new Link(logs[i][0], logs[i][1], logs[i][2]);
-            pq.add(l);   
-        }
-        parents = new int[N];
-        size = new int[N];
-        
-        // Initialize the parents & size array
-        for(int i = 0; i < N; i++){
-            parents[i] = i;
-            size[i] = 1;
-        }
-        
-        while(!pq.isEmpty()){
-            Link current = pq.remove();
-            int from = current.from;
-            int to = current.to;
-            System.out.println(Arrays.toString(parents));
-            System.out.println(Arrays.toString(size));
-            System.out.println(from);
-            System.out.println(to);
+            int time = logs[i][0];
+            int p = logs[i][1];
+            int q = logs[i][2];
+            pq.add(new TimeStamp(time, p, q));
             
-            if(union(from, to, N) == true){
+        }
+        
+        while(!pq.isEmpty()) {
+            TimeStamp current = pq.poll();
+            unionFind.union(current.p, current.q);
+            if(unionFind.isSingleComponent()){
                 return current.timeStamp;
             }
-           
-            System.out.println(Arrays.toString(parents));
-            System.out.println(Arrays.toString(size));
-            System.out.println();
         }
+      
         return -1;
-    }
-    
-    
-    private int find(int x) {
-        
-        int root = x;
-        while(parents[root] != root){
-            root = parents[root];
-        }
-        
-        while(x != root) {
-            int parent = parents[x];
-            parents[x] = root;
-            x = parent;
-        }
-        return root;
-    }
-    
-    private boolean isConnected(int x, int y){
-        return find(x) == find(y);
-    }
-    
-    private boolean union(int x, int y, int N) {
-        int xParent = find(x);
-        int yParent = find(y);
-        
-        if(xParent == yParent) {
-            return false;
-        } else {
-            if(size[xParent] >= size[yParent]) {
-                size[xParent] += size[yParent];
-                parents[yParent] = xParent;
-                if(size[xParent] == N){
-                    return true;
-                }
-                return false;
-                
-            } else {
-                size[yParent] += size[xParent];
-                parents[xParent] = yParent;
-                if(size[yParent] == N){
-                    return true;
-                }
-                return false;
-            }
-        }
     }
 }
