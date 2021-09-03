@@ -1,10 +1,8 @@
-<h2>841. Keys and Rooms</h2><h3>Medium</h3><hr><div><p>There are <code>n</code> rooms labeled from <code>0</code> to <code>n - 1</code> and you start in the room <code>0</code>. All the rooms labeled from <code>1</code> to <code>n</code> are initially locked and you cannot enter a locked room without having its key.</p>
+<h2>841. Keys and Rooms</h2><h3>Medium</h3><hr><div><p>There are <code>n</code> rooms labeled from <code>0</code> to <code>n - 1</code>&nbsp;and all the rooms are locked except for room <code>0</code>. Your goal is to visit all the rooms. However, you cannot enter a locked room without having its key.</p>
 
-<p>When you visit a room, you may find a set of <strong>distinct keys</strong> in it and you can use them to open locked rooms and enter them.</p>
+<p>When you visit a room, you may find a set of <strong>distinct keys</strong> in it. Each key has a number on it, denoting which room it unlocks, and you can take all of them with you to unlock the other rooms.</p>
 
-<p>You can visit the same room any number of times and the goal is to visit all the <code>n</code> rooms.</p>
-
-<p>Given an array <code>rooms</code> where <code>rooms[i]</code> is the set of keys that you can obtain if you visited room <code>i</code>, return <code>true</code> <em>if you can visit all the rooms, or</em> <code>false</code> <em>otherwise</em>.</p>
+<p>Given an array <code>rooms</code> where <code>rooms[i]</code> is the set of keys that you can obtain if you visited room <code>i</code>, return <code>true</code> <em>if you can visit <strong>all</strong> the rooms, or</em> <code>false</code> <em>otherwise</em>.</p>
 
 <p>&nbsp;</p>
 <p><strong>Example 1:</strong></p>
@@ -12,18 +10,18 @@
 <pre><strong>Input:</strong> rooms = [[1],[2],[3],[]]
 <strong>Output:</strong> true
 <strong>Explanation:</strong> 
-We start in room 0, and pick up key 1.
-We then go to room 1, and pick up key 2.
-We then go to room 2, and pick up key 3.
-We then go to room 3.
-Since we were able to go to every room, we return true.
+We visit room 0 and pick up key 1.
+We then visit room 1 and pick up key 2.
+We then visit room 2 and pick up key 3.
+We then visit room 3.
+Since we were able to visit every room, we return true.
 </pre>
 
 <p><strong>Example 2:</strong></p>
 
 <pre><strong>Input:</strong> rooms = [[1,3],[3,0,1],[2],[0]]
 <strong>Output:</strong> false
-<strong>Explanation:</strong> We can not enter the room with number 2.
+<strong>Explanation:</strong> We can not enter room number 2 since the only key that unlocks it is in that room.
 </pre>
 
 <p>&nbsp;</p>
