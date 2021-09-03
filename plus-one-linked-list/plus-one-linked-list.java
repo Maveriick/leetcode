@@ -10,24 +10,33 @@
  */
 class Solution {
     public ListNode plusOne(ListNode head) {
-        ListNode sol = new ListNode(0);
-        sol.next = head;
-        
-        ListNode rightMostNotNine = sol;
-        while(head != null){
-            if(head.val != 9){
-                rightMostNotNine = head;
+        if(head == null) {
+            return head;
+        }
+        ListNode sentinel = new ListNode(0);
+        sentinel.next = head;
+        ListNode lastNonNine = head;
+        ListNode runner = sentinel;
+        while(runner != null) {
+            if(runner.val != 9){
+                lastNonNine = runner;
             }
-            head = head.next;
+            runner = runner.next;
         }
         
-        rightMostNotNine.val = rightMostNotNine.val + 1;
-        rightMostNotNine = rightMostNotNine.next;
-        while(rightMostNotNine != null){
-            rightMostNotNine.val = 0;
-            rightMostNotNine = rightMostNotNine.next;
+        lastNonNine.val = lastNonNine.val + 1;
+        lastNonNine = lastNonNine.next;
+        while(lastNonNine != null ){
+            lastNonNine.val = 0;
+            lastNonNine = lastNonNine.next;
         }
         
-        return sol.val != 0 ? sol : sol.next;
+        if(sentinel.val == 1) {
+            return sentinel;
+        }
+        return sentinel.next;
+        
+        
+        
     }
 }
