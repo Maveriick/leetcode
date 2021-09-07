@@ -1,45 +1,49 @@
 class Interval {
-    int startTime;
-    int endTime;
-    
-    public Interval( int startTime, int endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
+    int start;
+    int end;
+    public Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
     }
 }
 
+
 class Solution {
     public int[][] merge(int[][] intervals) {
-        if(intervals.length <= 1){
-            return intervals;
+        PriorityQueue<Interval> pq = new PriorityQueue<>((a,b) -> a.start - b.start);
+        for(int i = 0; i < intervals.length; i++) {
+            Interval toAdd = new Interval(intervals[i][0], intervals[i][1]);
+            pq.add(toAdd);
         }
         
-        Arrays.sort(intervals, ((a,b) -> a[0] - b[0]));
-        Interval previous = new Interval(intervals[0][0], intervals[0][1]);
+        List<Interval> sorted = new ArrayList<>();
+        while(!pq.isEmpty()) {
+            sorted.add(pq.poll());
+        }
+        
         List<Interval> merged = new ArrayList<>();
-        for(int i = 1; i < intervals.length; i++) {
+        
+        Interval previous = null;
+        int start = 0;
+        while(start < sorted.size()) {
+            Interval current = sorted.get(start);
             if(previous == null) {
-                previous = new Interval(intervals[i][0], intervals[i][1]);
-            }else if(intervals[i][0] <= previous.endTime) {
-                previous.startTime = Math.min(previous.startTime, intervals[i][0]);
-                previous.endTime = Math.max(previous.endTime, intervals[i][1]);
+                previous = current;
+            } else if(previous.end >= current.start) {
+                previous.start = Math.min(previous.start, current.start);
+                previous.end = Math.max(previous.end, current.end);
             } else {
                 merged.add(previous);
-                previous = new Interval(intervals[i][0], intervals[i][1]);
+                previous = current;
             }
+            start++;
         }
-        
         merged.add(previous);
-        
-        
-        int[][] toReturn = new int[merged.size()][2];
+        int[][] solution = new int[merged.size()][2];
         for(int i = 0; i < merged.size(); i++) {
-            Interval current = merged.get(i);
-            toReturn[i][0] = current.startTime;
-            toReturn[i][1] = current.endTime;
+            solution[i][0] = merged.get(i).start;
+            solution[i][1] = merged.get(i).end;
         }
-        
-        return toReturn;
-                    
+        return solution;
     }
 }
