@@ -14,33 +14,26 @@
  * }
  */
 class Solution {
+    int index = 0;
     public TreeNode bstFromPreorder(int[] preorder) {
-        List<Integer> input = new ArrayList<>();
-        for(int i = 0; i < preorder.length; i++) {
-            input.add(preorder[i]);
-        }
-        return buildTree(input);
+        return buildTree(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        
     }
     
-    private TreeNode buildTree(List<Integer> preOrder) {
-        if(preOrder.size() == 0) {
+    
+    private TreeNode buildTree(int[] preorder, int min, int max) {
+        if(index == preorder.length) {
             return null;
         }
-    
-        TreeNode root = new TreeNode(preOrder.get(0));
-        int pivot = preOrder.get(0);
-        List<Integer> lessThan = new ArrayList<>();
-        List<Integer> moreThan = new ArrayList<>();
-        for(int i = 1; i < preOrder.size(); i++) {
-            if(preOrder.get(i) <= pivot) {
-                lessThan.add(preOrder.get(i));
-            } else {
-                moreThan.add(preOrder.get(i));
-            }
-        }
         
-        root.left = buildTree(lessThan);
-        root.right = buildTree(moreThan);
-        return root;  
+        int value = preorder[index];
+        if(value < min || value > max) {
+            return null;
+        }
+         index++;
+        TreeNode root = new TreeNode(value);
+        root.left = buildTree(preorder, min, value);
+        root.right = buildTree(preorder, value, max);
+        return root;
     }
 }
