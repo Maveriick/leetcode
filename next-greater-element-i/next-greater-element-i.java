@@ -1,28 +1,35 @@
 class Solution {
     public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int[] nextGreater = new int[nums2.length];
+        Arrays.fill(nextGreater, -1);
         
-        Map<Integer, Integer> index = new HashMap<>();
+        Map<Integer, Integer> valueIndexMap = new HashMap<>();
+        
+        Stack<Integer> stack = new Stack<>();
+        
         for(int i = 0; i < nums2.length; i++) {
-            index.put(nums2[i], i);
+            valueIndexMap.put(nums2[i], i);
+            if(stack.isEmpty()){
+                stack.push(i);
+            } else {
+                if(nums2[i] > nums2[stack.peek()]) {
+                    while(!stack.isEmpty() && nums2[i] > nums2[stack.peek()]){
+                        int index = stack.pop();
+                        nextGreater[index] = nums2[i];
+                    }
+                }
+                stack.push(i);
+            }
+        }
+        //System.out.println(Arrays.toString(nextGreater));
+        
+        int[] solution = new int[nums1.length];
+        for(int i = 0; i < nums1.length; i++) {
+            int index = valueIndexMap.get(nums1[i]);
+            solution[i] = nextGreater[index];
         }
         
-        for(int i = 0; i < nums1.length; i++) {
-            int currentNum = nums1[i];
-            int nextGreater = currentNum;
-            int startIndex = index.get(currentNum);
-            for(int j = startIndex + 1; j < nums2.length; j++){
-                if(nums2[j] > currentNum){
-                    nextGreater = nums2[j];
-                    break;
-                }
-            }
-            
-            if(nextGreater == currentNum){
-                nums1[i] = -1;
-            } else {
-                nums1[i] = nextGreater;
-            }
-        }
-        return nums1;
+        return solution;
+        
     }
 }
