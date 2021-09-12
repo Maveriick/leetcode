@@ -1,26 +1,32 @@
 class Solution {
     public int singleNonDuplicate(int[] nums) {
-         int lo = 0;
-        int hi = nums.length - 1;
-        while (lo < hi) {
-            int mid = lo + (hi - lo) / 2;
-            boolean halvesAreEven = (hi - mid) % 2 == 0;
-            if (nums[mid + 1] == nums[mid]) {
-                if (halvesAreEven) {
-                    lo = mid + 2;
-                } else {
-                    hi = mid - 1;
-                }
-            } else if (nums[mid - 1] == nums[mid]) {
-                if (halvesAreEven) {
-                    hi = mid - 2;
-                } else {
-                    lo = mid + 1;
-                }
-            } else {
+        int low = 0;
+        int high = nums.length - 1;
+        
+        if(high == 0) {
+            return nums[0];
+        }else if(nums[0] != nums[1]){
+            return nums[0];
+        } else if(nums[high] != nums[high - 1]){
+            return nums[high];
+        }
+        
+        
+        
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            
+            if(mid > 0 && mid  < nums.length - 1 && nums[mid] != nums[mid - 1] && nums[mid] != nums[mid + 1]) {
                 return nums[mid];
             }
+            
+            if((mid % 2 == 0 && (nums[mid + 1] == nums[mid])) || (mid % 2 == 1 && (nums[mid] == nums[mid - 1]))){
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
         }
-        return nums[lo];
+        return -1;
+        
     }
 }
