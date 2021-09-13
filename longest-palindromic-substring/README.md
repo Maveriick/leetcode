@@ -31,5 +31,6 @@
 
 <ul>
 	<li><code>1 &lt;= s.length &lt;= 1000</code></li>
-	<li><code>s</code> consist of only digits and English letters (lower-case and/or upper-case),</li>
-</ul></div>
+	<li><code>s</code> consist of only digits and English letters.</li>
+</ul>
+</div>
