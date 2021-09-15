@@ -14,31 +14,33 @@
  * }
  */
 class Solution {
+    List<List<Integer>> solution = new ArrayList<>();
     public List<List<Integer>> levelOrder(TreeNode root) {
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        List<List<Integer>> sol = new ArrayList<>();
         if(root == null) {
-            return sol;
+            return solution;
         }
-        while(!q.isEmpty()) {
-            int size = q.size();
-            Queue<TreeNode> temp = new LinkedList<>();
-            List<Integer> partial = new ArrayList<>();
-            for(int i = 0; i < size; i++){
-                TreeNode c = q.remove();
-                partial.add(c.val);
-                if(c.left != null) {
-                    temp.add(c.left);
+        
+        Queue<TreeNode> bfsQ = new LinkedList<>();
+        bfsQ.add(root);
+        
+        while(!bfsQ.isEmpty()) {
+            List<Integer> partialSolution = new ArrayList<>();
+            List<TreeNode> tempList = new ArrayList<>();
+            int size = bfsQ.size();
+            for(int i = 0; i < size; i++) {
+                TreeNode current = bfsQ.remove();
+                partialSolution.add(current.val);
+                if(current.left != null) {
+                    tempList.add(current.left);
                 }
                 
-                if(c.right != null) {
-                    temp.add(c.right);
+                if(current.right != null) {
+                    tempList.add(current.right);
                 }
             }
-            q.addAll(temp);
-            sol.add(partial);
+            solution.add(partialSolution);
+            bfsQ.addAll(tempList);
         }
-        return sol;
+        return solution;
     }
 }
