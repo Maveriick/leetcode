@@ -1,34 +1,28 @@
-
-
 class Solution {
-
     public boolean isRobotBounded(String instructions) {
-        int currentDirection = 0;
-        int currentX = 0;
-        int currentY = 0;
+        int[] dirs = new int[]{0,1,2,3};
+        int currentDir = 0;
+        int x = 0;
+        int y = 0;
         for(int i = 0; i < instructions.length(); i++) {
             Character current = instructions.charAt(i);
-            if(current == 'L') {
-                currentDirection = (currentDirection + 3) % 4;
-            } else if(current == 'R') {
-                currentDirection = (currentDirection + 1) % 4;
-            } else {
-                if(currentDirection == 0) {
-                    currentX++;
-                } else if(currentDirection == 2) {
-                    currentX--;
-                } else if(currentDirection == 1) {
-                    currentY ++;
+            if(current == 'G'){
+                if(currentDir == 0){
+                    x++;
+                } else if(currentDir == 1){
+                    y ++;
+                } else if(currentDir == 2){
+                    x--;
                 } else {
-                    currentY --;
+                    y--;
                 }
+            } else if(current == 'L'){
+                currentDir = (currentDir + 3) % 4;
+            } else {
+                currentDir = (currentDir + 1) % 4;
             }
         }
         
-       
-        return (currentX == 0 && currentY == 0) || (currentDirection != 0) ;
-        
+        return (x == 0 && y == 0) ||(currentDir != 0);
     }
-    
 }
-
