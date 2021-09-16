@@ -1,36 +1,26 @@
 class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
-        boolean canBreak = false;;
+        
+        Set<Integer> visited = new HashSet<>();
         Queue<Integer> bfsQ = new LinkedList<>();
         bfsQ.add(0);
-        boolean[] visited = new boolean[s.length()];
         
-        while(!bfsQ.isEmpty()){
-            if(canBreak){
-                break;
-            }
-            //System.out.println(bfsQ);
+        
+        while(!bfsQ.isEmpty()) {
             int currentIndex = bfsQ.remove();
-             if (visited[currentIndex]) {
-                continue;
-            }
             if(currentIndex == s.length()) {
-                canBreak = true;
-                break;
-            }
-            for(int i = currentIndex ; i < s.length(); i++) {
-                String word = s.substring(currentIndex, i + 1);
-                if(wordDict.contains(word) && canBreak == false){
-                    if(i + 1 == s.length()) {
-                        canBreak = true;
-                        break;
+                return true;
+            } else {
+                for(int i = currentIndex + 1; i <= s.length(); i++) {
+                    if(wordDict.contains(s.substring(currentIndex, i))) {
+                        if(!visited.contains(i)) {
+                            visited.add(i);
+                            bfsQ.add(i);
+                        }
                     }
-                    bfsQ.add(i + 1);
                 }
             }
-            visited[currentIndex] = true;
         }
-        
-        return canBreak;
+        return false;
     }
 }
