@@ -19,23 +19,27 @@ class Solution {
         if(root == null) {
             return 0;
         }
+        
         traverse(root, 0, targetSum);
         pathSum(root.left, targetSum);
         pathSum(root.right, targetSum);
         return paths;
     }
     
-    private void traverse(TreeNode root, int currentSum, int targetSum) {
+    
+    private void traverse(TreeNode root, int currentSum, int targetSum){
         if(root == null) {
             return;
         }
-       
+        
         currentSum += root.val;
-       
         if(currentSum == targetSum) {
-           paths++;
+            paths ++;
         }
+        
         traverse(root.left, currentSum, targetSum);
-        traverse(root.right ,currentSum, targetSum);        
+        traverse(root.right, currentSum , targetSum);
+        
+        
     }
 }
