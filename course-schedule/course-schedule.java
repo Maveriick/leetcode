@@ -1,46 +1,51 @@
 class Solution {
-    boolean canComplete = true;
-    Set<Integer> visited = new HashSet<>();
+    Set<Integer> discovered = new HashSet<>();
+    Set<Integer> processed = new HashSet<>();
+    Set<Integer> hasIncoming = new HashSet<>();
+    boolean canTake = true;
+    
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        Map<Integer, List<Integer>> g = buildG(prerequisites);
-        for(int i = 0; i < numCourses; i++) {
-            if(!canComplete == false && !visited.contains(i)){
-                dfs(i, g, new HashSet<>());
-            }     
+        Map<Integer, List<Integer>> map = buildMap(prerequisites);
+        
+        for(int i = 0; i < numCourses;i++) {
+            if(!hasIncoming.contains(i) && !discovered.contains(i)){
+                dfs(map, i);
+            }
         }
-        return canComplete;
+        
+        return processed.size() == numCourses && canTake == true;
     }
     
-    
-    private void dfs(int currentCourse, Map<Integer, List<Integer>> g, Set<Integer> currentStack) {
-        if(canComplete == false){
+    private void dfs(Map<Integer, List<Integer>> map, int currentCourse) {
+        if(canTake == false){
             return;
         }
-        visited.add(currentCourse);
-        currentStack.add(currentCourse);
-        List<Integer> courses = g.getOrDefault(currentCourse, new ArrayList<>());
-        for(int i = 0; i < courses.size(); i++) {
-            if(currentStack.contains(courses.get(i))){
-                canComplete = false;
+        discovered.add(currentCourse);
+        List<Integer> toList = map.getOrDefault(currentCourse, new ArrayList<>());
+        for(int i = 0; i < toList.size(); i++) {
+            if(discovered.contains(toList.get(i)) && !processed.contains(toList.get(i))) {
+                canTake = false;
             }
             
-            if(!visited.contains(courses.get(i))){
-                dfs(courses.get(i), g, currentStack);
+            if(!discovered.contains(toList.get(i))){
+                dfs(map, toList.get(i));
             }
         }
-         currentStack.remove(currentCourse);
+        
+        processed.add(currentCourse);
     }
     
-    
-    private Map<Integer, List<Integer>> buildG(int[][] p) {
-        Map<Integer, List<Integer>> g = new HashMap<>();
-        for(int i = 0; i < p.length; i++) {
-            int from = p[i][0];
-            int to = p[i][1];
-            List<Integer> cList = g.getOrDefault(from, new ArrayList<>());
-            cList.add(to);
-            g.put(from, cList);
+    private Map<Integer, List<Integer>> buildMap(int[][] prerequisites) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for(int i = 0; i < prerequisites.length; i++) {
+            int from = prerequisites[i][1];
+            int to = prerequisites[i][0];
+            hasIncoming.add(to);
+            List<Integer> current = map.getOrDefault(from, new ArrayList<>());
+            current.add(to);
+            map.put(from, current);
         }
-        return g;
+        
+        return map;
     }
 }
