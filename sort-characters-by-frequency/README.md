@@ -1,4 +1,6 @@
-<h2>451. Sort Characters By Frequency</h2><h3>Medium</h3><hr><div><p>Given a string <code>s</code>, sort it in decreasing order based on the frequency of characters, and return <em>the sorted string</em>.</p>
+<h2>451. Sort Characters By Frequency</h2><h3>Medium</h3><hr><div><p>Given a string <code>s</code>, sort it in <strong>decreasing order</strong> based on the <strong>frequency</strong> of the characters. The <strong>frequency</strong> of a character is the number of times it appears in the string.</p>
+
+<p>Return <em>the sorted string</em>. If there are multiple answers, return <em>any of them</em>.</p>
 
 <p>&nbsp;</p>
 <p><strong>Example 1:</strong></p>
@@ -13,7 +15,7 @@ So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid ans
 
 <pre><strong>Input:</strong> s = "cccaaa"
 <strong>Output:</strong> "aaaccc"
-<strong>Explanation:</strong> Both 'c' and 'a' appear three times, so "aaaccc" is also a valid answer.
+<strong>Explanation:</strong> Both 'c' and 'a' appear three times, so both "cccaaa" and "aaaccc" are valid answers.
 Note that "cacaca" is incorrect, as the same characters must be together.
 </pre>
 
@@ -30,6 +32,6 @@ Note that 'A' and 'a' are treated as two different characters.
 
 <ul>
 	<li><code>1 &lt;= s.length &lt;= 5 * 10<sup>5</sup></code></li>
-	<li><code>s</code> consists of English letters and digits.</li>
+	<li><code>s</code> consists of uppercase and lowercase English letters and digits.</li>
 </ul>
 </div>
