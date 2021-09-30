@@ -1,19 +1,18 @@
 class Solution {
     Set<Integer> visited = new HashSet<>();
     public int minTime(int n, int[][] edges, List<Boolean> hasApple) {
-       Map<Integer, List<Integer>> graph = buildGraph(edges);
-       return dfs(graph, 0, 0, hasApple);    
+        Map<Integer, List<Integer>> graph = buildGraph(edges);
+       return dfs(graph, 0, hasApple);    
     }
     
-    
-    private int dfs(Map<Integer, List<Integer>> graph, int currentVertex, int currentPathLength, List<Boolean> hasApple) {
+    private int dfs(Map<Integer, List<Integer>> graph, int currentVertex, List<Boolean> hasApple) {
         visited.add(currentVertex);
         List<Integer> neighbors = graph.getOrDefault(currentVertex, new ArrayList<>());
         
         int time = 0;
         for(int i = 0; i < neighbors.size(); i++) {
             if(!visited.contains(neighbors.get(i))){
-                time += dfs(graph, neighbors.get(i), currentPathLength + 1, hasApple);
+                time += dfs(graph, neighbors.get(i), hasApple);
             }
         }
         
