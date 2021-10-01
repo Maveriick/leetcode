@@ -14,31 +14,28 @@
  * }
  */
 class Solution {
-    int maxLevel = 0;
-    Map<Integer, List<Integer>> levelMap = new HashMap<>();
+    List<Integer> solution = new ArrayList<>();
+    int maxLevel = -1;
     public List<Integer> rightSideView(TreeNode root) {
-        
-        traverse(root, 0);
-        List<Integer> sol = new ArrayList<>();
         if(root == null) {
-            return sol;
+            return solution;
         }
-        for(int i = 0; i <= maxLevel; i++) {
-            sol.add(levelMap.get(i).get(levelMap.get(i).size() - 1));
-        }
-        return sol;
+        traverse(root, 0);
+        return solution;
     }
     
-    private void traverse(TreeNode root, int level) {
+    private void traverse(TreeNode root, int currentLevel) {
         if(root == null) {
             return;
         }
         
-        maxLevel = Math.max(maxLevel, level);
-        traverse(root.left, level + 1);
-        List<Integer> current = levelMap.getOrDefault(level, new ArrayList<>());
-        current.add(root.val);
-        levelMap.put(level, current);
-        traverse(root.right, level + 1);
+        if(currentLevel > maxLevel){
+            solution.add(root.val);
+            maxLevel = Math.max(maxLevel, currentLevel);
+        }
+        
+        
+        traverse(root.right, currentLevel + 1);
+        traverse(root.left, currentLevel + 1);
     }
 }
