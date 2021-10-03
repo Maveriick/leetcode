@@ -1,23 +1,21 @@
 class Solution {
-    int totalMax = Integer.MIN_VALUE;
     public int lengthOfLIS(int[] nums) {
-        
-        if(nums.length == 1){
-            return 1;
-        }
         int[] dp = new int[nums.length];
-        dp[0] = 1;
-        for(int i = 1; i < nums.length; i++){
-            int max = 0;
-            for(int j = 0; j < i; j++){
+        
+        Arrays.fill(dp, 1);
+        
+        for(int i = 1; i < nums.length; i++) {
+            for(int j = 0; j < i; j++) {
                 if(nums[i] > nums[j]) {
-                    max = Math.max(dp[j] , max);
+                    dp[i] = Math.max(dp[i], 1 +  dp[j]);
                 }
             }
-            dp[i] = max + 1;
-            totalMax = Math.max(totalMax, dp[i]);
         }
-        //System.out.println(Arrays.toString(dp));
-        return totalMax;
+        
+        int max = 1;
+        for(int i = 0; i < dp.length; i++) {
+            max = Math.max(max, dp[i]);
+        }
+        return max;
     }
 }
