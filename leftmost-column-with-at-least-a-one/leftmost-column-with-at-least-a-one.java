@@ -9,21 +9,21 @@
 
 class Solution {
     public int leftMostColumnWithOne(BinaryMatrix binaryMatrix) {
-        int rows = binaryMatrix.dimensions().get(0);
-        int cols = binaryMatrix.dimensions().get(1);
+        List<Integer> d = binaryMatrix.dimensions();
+        int totalRows = d.get(0);
+        int totalCols = d.get(1);
         
         int currentRow = 0;
-        int currentCol = cols - 1;
+        int currentCol = totalCols - 1;
         
-        
-        while(currentRow < rows && currentCol >= 0){
-            if (binaryMatrix.get(currentRow, currentCol) == 0) {
-                currentRow++;
+        while(currentCol >= 0 && currentRow < totalRows) {
+            if(binaryMatrix.get(currentRow, currentCol) == 0) {
+                currentRow ++;
             } else {
-                currentCol--; 
+                currentCol --;
             }
         }
         
-         return (currentCol == cols - 1) ? -1 : currentCol + 1;
+        return currentCol == totalCols - 1 ? -1 : currentCol + 1;
     }
 }
