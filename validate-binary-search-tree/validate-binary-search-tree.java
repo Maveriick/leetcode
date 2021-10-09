@@ -14,24 +14,22 @@
  * }
  */
 class Solution {
-    List<Integer> sol = new ArrayList<>();
     public boolean isValidBST(TreeNode root) {
-        traverse(root);
-        for(int i = 0; i < sol.size() - 1; i++){
-            if(sol.get(i + 1) <= sol.get(i)){
-                return false;
-            }
-        }
-        return true;
+        return isValidRecursive(root, null, null);
     }
     
-    private void traverse(TreeNode root) {
+    private boolean isValidRecursive(TreeNode root, Integer min, Integer max) {
         if(root == null) {
-            return;
+            return true;
         }
         
-        traverse(root.left);
-        sol.add(root.val);
-        traverse(root.right);
+        
+        if(max != null && root.val >= max || min != null && root.val <= min) {
+            return false;
+        }
+        
+        return isValidRecursive(root.left, min, root.val) && isValidRecursive(root.right, root.val, max);
     }
+    
+    
 }
