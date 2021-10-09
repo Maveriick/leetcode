@@ -1,37 +1,37 @@
 class Solution {
-    List<String> sol = new ArrayList<>();
-     Map<Integer, String> keyPad = new HashMap<>();
+    List<String> solution = new ArrayList<>();
     public List<String> letterCombinations(String digits) {
-        if(digits.length() == 0) {
-            return sol;
+        if(digits.length() == 0){
+            return solution;
         }
-       
-        keyPad.put(2, "abc");
-        keyPad.put(3, "def");
-        keyPad.put(4, "ghi");
-        keyPad.put(5, "jkl");
-        keyPad.put(6, "mno");
-        keyPad.put(7, "pqrs");
-        keyPad.put(8, "tuv");
-        keyPad.put(9, "wxyz");
+        Map<Character, String> keyMap = new HashMap<>();
+        keyMap.put('0', "");
+        keyMap.put('1', "");
+        keyMap.put('2', "abc");
+        keyMap.put('3', "def");
+        keyMap.put('4', "ghi");
+        keyMap.put('5', "jkl");
+        keyMap.put('6', "mno");
+        keyMap.put('7', "pqrs");
+        keyMap.put('8', "tuv");
+        keyMap.put('9', "wxyz");
         
-        dfs(digits, 0, new StringBuilder());
-        return sol;
-        
+        backTrack(digits ,0, new StringBuilder(), keyMap);
+        return solution;
     }
     
-    private void dfs(String digits, int currentIndex, StringBuilder currentString) {
-        if(currentString.length() == digits.length()) {
-            sol.add(new String(currentString.toString()));
+    private void backTrack(String digits, int currentIndex, StringBuilder current, Map<Character, String> keyMap) {
+        if(currentIndex == digits.length()){
+            solution.add(new String(current));
             return;
         }
         
-        int currentDigit = Integer.parseInt(String.valueOf(digits.charAt(currentIndex)));
-        String keys = keyPad.get(currentDigit);
-        for(int i = 0; i < keys.length(); i++) {
-            currentString.append(keys.charAt(i));
-            dfs(digits, currentIndex + 1, currentString);
-            currentString.deleteCharAt(currentString.length() - 1);
+        Character currentChar = digits.charAt(currentIndex);
+        String mapping = keyMap.get(currentChar);
+        for(int i = 0; i < mapping.length(); i++){
+            current.append(mapping.charAt(i));
+            backTrack(digits, currentIndex + 1, current, keyMap);
+            current.deleteCharAt(current.length() - 1);
         }
     }
 }
