@@ -1,36 +1,37 @@
 class Solution {
     public int leastInterval(char[] tasks, int n) {
-        Map<Character, Integer> map = new HashMap<>();
+        Map<Character, Integer> fMap = new HashMap<>();
         for(int i = 0; i < tasks.length; i++) {
-            Character current = tasks[i];
-            map.put(current, map.getOrDefault(current, 0) + 1);
+            int currentF = fMap.getOrDefault(tasks[i], 0);
+            ++currentF;
+            fMap.put(tasks[i], currentF);
         }
         
         PriorityQueue<Integer> pq = new PriorityQueue<>((a,b) -> b - a);
-        pq.addAll(map.values());
+        pq.addAll(fMap.values());
         
         
+        int timeUnits = 0;
         
-        int time = 0;
         while(!pq.isEmpty()){
-            
             List<Integer> temp = new ArrayList<>();
-            for(int i = 0; i < n + 1; i++){
+            for(int i = 0; i < n+1; i++) {
                 if(!pq.isEmpty()){
-                     temp.add(pq.poll());
+                    temp.add(pq.poll());
                 }
             }
             
-            for(int i = 0; i < temp.size(); i++)  {
-                int current = temp.get(i);
-                current --;
-                if(current > 0) {
-                    pq.add(current);
+            for(int i = 0; i < temp.size(); i++) {
+                int currentP = temp.get(i);
+               currentP--;
+                
+                if(currentP > 0) {
+                  pq.add(currentP);
                 }
             }
             
-            time += pq.isEmpty() ? temp.size() : n + 1; 
+            timeUnits += pq.isEmpty() ? temp.size() : n + 1;
         }
-        return time;
+        return timeUnits;
     }
 }
