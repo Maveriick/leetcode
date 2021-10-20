@@ -10,33 +10,31 @@
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
+        
         if(head == null || head.next == null) {
             return head;
         }
         
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
         
+        
+        ListNode sentinel = new ListNode(-1);
+        sentinel.next = head;
         ListNode current = head;
+        ListNode previous = sentinel;
         ListNode next = null;
-        ListNode prev = dummy;
+        
         
         while(current != null && current.next != null) {
             next = current.next;
-            prev.next = next;
+            previous.next = next;
             current.next = next.next;
             next.next = current;
             
-            prev = current;
-            current = current.next;
             
+            previous = current;
+            current = current.next;
         }
         
-        return dummy.next;
+        return sentinel.next;
     }
 }
-
-
-/*
-1 -> 2 -> 3 -> 4
-*/
